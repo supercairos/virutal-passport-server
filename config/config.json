@@ -1,6 +1,6 @@
 {
     "mongoose": {
-        "uri": "mongodb://localhost/",
+        "uri": "mongodb://127.0.0.1:27017/",
 		"name": "passport"
     },
 

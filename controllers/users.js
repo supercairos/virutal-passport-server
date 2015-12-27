@@ -17,39 +17,61 @@ module.exports = function(app) {
 	/**
 	 * This is the signup action; Pass a valid JSON body containing at least 
 	 **/
-	app.post('/users/register', function (req, res) {
-
-
-		if (!req.body) {
-			log.error("A request with no body was made");
-			return res.status(400).json(new NetworkException({
-				code: 1,
-				message:"Please provide a body with your request"
-			})).end();
-		}
-
-		// // TODO: Check if email exist in database; 
-		var myUser = new User({
-			email: req.body.email,
-			firstname: req.body.firstname,
-			lastname: req.body.lastname,
-			password: User.hash(req.body.password),
-			token: crypto.randomBytes(256).toString('hex')
-		});
-
-		myUser.save(function (err, user) {
-			if (err){
-				log.error("User %s failed: %s ", myUser.name, err);
-				res.status(500).json(new NetworkException({
-					code: 1,
-					message:"This is the error message"
-				})).end();
-			} else {
-				log.info("A new user registered %s (token:%s)", user.email, user.token);
-				delete user.password;
-				res.status(200).json( user ).end();
+	app.post('/users/register', 
+		function (req, res, next) {
+			if (!req.body) {
+				return next(new NetworkException("A request with no body was made", 1));
 			}
-		});
+			
+			if (!req.body.email) {
+				return next(new NetworkException("A request with no email was made", 1));
+			}
+			
+			if (!req.body.lastname) {
+				return next(new NetworkException("A request with no lastname was made", 1));
+			}
+			
+			if (!req.body.firstname) {
+				return next(new NetworkException("A request with no firstname was made", 1));
+			}
+			
+			if (!req.body.password) {
+				return next(new NetworkException("A request with no password was made", 1));
+			}
+			
+			next();
+		}, 
+		function (req, res, next) {
+			User.where({ email: req.body.email.trim() })
+				.findOne( function(err, user) {
+					if (err) {
+						return next(new NetworkException(err.message, 1));
+					}
+
+					if (user) {
+						return next(new NetworkException("This user :" + req.body.email + " already exist", 1));
+					}
+				});
+				
+			next();
+		},
+		function (req, res) {
+			var myUser = new User({
+				email: req.body.email.trim(),
+				firstname: req.body.firstname.trim(),
+				lastname: req.body.lastname.trim(),
+				password: User.hash(req.body.password.trim()),
+				token: crypto.randomBytes(256).toString('hex')
+			});
+
+			myUser.save(function (err, user) {
+				if (err){
+					return next(new NetworkException(err.message, 1));
+				} 
+				
+				log.info("A new user registered %s (token:%s)", user.email, user.token);
+				res.status(201).json( user ).end();
+			});
 	});
 
 	app.put('/users/gcm/:gcm_token', 
@@ -57,13 +79,10 @@ module.exports = function(app) {
 		function(req, res) {
 			req.user.update({ gcm_token : req.params.gcm_token }, function (err, affected, raw) {
 				if (err) {
-					log.error("Error is " + err);
-					res.sendStatus(500);
-					return;
+					return next(new NetworkException(err.message, 1));
 				}
 				log.info('The number of updated documents was %s', affected);
-				delete user.password;
-				res.status(200).json( req.user ).end();
+				res.status(201).end();
 			});
 		}
 	);
@@ -73,7 +92,6 @@ module.exports = function(app) {
 			session: false 
 		}), 
 		function(req, res) {
-			delete user.password;
 			res.status(200).json( req.user ).end();
 		}
 	);
@@ -93,7 +111,10 @@ module.exports = function(app) {
 
 		
 		User.find(function (err, users) {
-			if (err) return log.error(err);
+			if (err){
+				return next(new NetworkException(err.message, 1));
+			} 
+			
 			var registrationIds = [];
 
 			users.forEach(function(entry) {
@@ -105,8 +126,8 @@ module.exports = function(app) {
 
 			if (registrationIds.length > 0) {
 				GcmSender.send(message, registrationIds, 4, function (err, result) {
-					if(err){
-						log.error(err);
+					if (err) {
+						return next(new NetworkException(err.message, 1));
 					}
 
 				    log.info(result);
@@ -126,9 +147,8 @@ module.exports = function(app) {
 			log.info("Looking for an email starting by %s", req.query.q);
 			if(req.params.query && req.params.query.length > 2){
 				User.find({ 'email':  { $regex: new RegExp(req.query.q, 'i') }}, 'email picture', function(err, emails) {
-					if(err){
-						log.error("Database error %s ", err);
-						res.sendStatus(500);
+					if (err) {
+						return next(new NetworkException(err.message, 1));
 					}
 
 					res.status(200).json(emails).end();

@@ -30,11 +30,14 @@ app.use('/uploads', express.static('uploads'));
 
 // dynamically include routes (Controller)
 fs.readdirSync( __dirname + '/controllers').forEach(function (file) {
-	if(file.substr(-3) == '.js') {
+	if(file.substr(-3) == '.js' && file != 'errors.js') {
 		logger.info('Inserting controller : ' + file);
 		require(__dirname + '/controllers/' + file)(app);
 	}
 });
+
+// Error handling file
+require('./controllers/errors.js')(app)
 
 //TODO: Change to a SSL Server at one point;
 //This was generated through the commands:
