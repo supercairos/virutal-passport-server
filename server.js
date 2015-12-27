@@ -52,6 +52,9 @@ fs.readdirSync( __dirname + '/controllers').forEach(function (file) {
 //	logger.info('IBetYa server is running on port %d', config.get("port"));
 //});
 
-http.createServer(app).listen( config.get("port") , function () {
-	logger.info('WeProov server is running on port %d', config.get("port"));
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 1337
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+
+http.createServer(app).listen( server_port , server_ip_address, function () {
+	logger.info('VirtualPassport server is running on port %s:%d', server_ip_address, server_port);
 });

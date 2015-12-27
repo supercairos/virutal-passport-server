@@ -1,5 +1,4 @@
 # Logs
-logs/*
 *.log
 
 # Runtime data
@@ -32,8 +31,5 @@ node_modules
 # Windows junk files
 [Tt]humbs.db
 .DS_Store
-
-# Uploaded files
-uploads/*
 
 
