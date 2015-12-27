@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 var config = require('./config.js');
 var logger = require('../libs/logger.js');
 
-var server_port = process.env.OPENSHIFT_MONGODB_DB_URL || config.get("mongoose:uri")
+var mongoose_uri = process.env.OPENSHIFT_MONGODB_DB_URL || config.get("mongoose:uri")
 
-mongoose.connect(config.get("mongoose:uri"));
+mongoose.connect(mongoose_uri);
 
 mongoose.connection.on('error', function callback() {
 	logger.error('Could not connect to %s', config.get("mongoose:uri"));
