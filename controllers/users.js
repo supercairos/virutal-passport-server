@@ -60,9 +60,7 @@ module.exports = function(app) {
 					res.sendStatus(500);
 					return;
 				}
-				log.info('The number of updated documents was %d', affected);
-				log.info('The raw response from Mongo was %s', raw);
-
+				log.info('The number of updated documents was %s', affected);
 				res.status(200).json( req.user ).end();
 			});
 		}
@@ -119,10 +117,11 @@ module.exports = function(app) {
 		});	
 	});
 
-	app.get('/users/autocomplete', 
+	app.get('/users/autocomplete/:query', 
+		passport.authenticate('bearer', { session: false }), 
 		function(req, res) {
 			log.info("Looking for an email starting by %s", req.query.q);
-			if(req.query.q && req.query.q.length > 2){
+			if(req.params.query && req.params.query.length > 2){
 				User.find({ 'email':  { $regex: new RegExp(req.query.q, 'i') }}, 'email picture', function(err, emails) {
 					if(err){
 						log.error("Database error %s ", err);
