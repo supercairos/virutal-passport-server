@@ -46,6 +46,7 @@ module.exports = function(app) {
 				})).end();
 			} else {
 				log.info("A new user registered %s (token:%s)", user.email, user.token);
+				delete user.password;
 				res.status(200).json( user ).end();
 			}
 		});
@@ -61,6 +62,7 @@ module.exports = function(app) {
 					return;
 				}
 				log.info('The number of updated documents was %s', affected);
+				delete user.password;
 				res.status(200).json( req.user ).end();
 			});
 		}
@@ -71,6 +73,7 @@ module.exports = function(app) {
 			session: false 
 		}), 
 		function(req, res) {
+			delete user.password;
 			res.status(200).json( req.user ).end();
 		}
 	);

@@ -1,6 +1,7 @@
 {
     "mongoose": {
-        "uri": "mongodb://localhost/passport"
+        "uri": "mongodb://localhost/",
+		"name": "passport"
     },
 
     "gcm" : {

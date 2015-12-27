@@ -7,11 +7,11 @@ var mongoose_uri = process.env.OPENSHIFT_MONGODB_DB_URL || config.get("mongoose:
 mongoose.connect(mongoose_uri);
 
 mongoose.connection.on('error', function callback() {
-	logger.error('Could not connect to %s', config.get("mongoose:uri"));
+	logger.error('Could not connect to %s', mongoose_uri + config.get("mongoose:name"));
 });
 
 mongoose.connection.once('open', function callback () {
-	logger.info('Database is connected to %s', config.get("mongoose:uri"));
+	logger.info('Database is connected to %s', mongoose_uri);
 });
 
 
