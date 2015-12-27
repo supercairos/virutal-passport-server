@@ -1,5 +1,5 @@
 # Logs
-logs
+logs/*
 *.log
 
 # Runtime data
@@ -25,3 +25,15 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+
+# SVN
+.svn/
+
+# Windows junk files
+[Tt]humbs.db
+.DS_Store
+
+# Uploaded files
+uploads/*
+
+

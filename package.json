@@ -1,0 +1,31 @@
+{
+	"name": "virtual passport",
+	"description": "A EAR project",
+	"version": "0.0.1",
+	"homepage": "play store",
+	"main": "server.js",
+	"authors": [
+		"Romain Caire"
+	],
+	"engines": {
+		"node": ">=0.10"
+	},
+	"bin": {
+		"virtual-passport": "server.js"
+	},
+	"dependencies": {
+		"express": "latest",
+		"body-parser": "latest",
+		"mongodb": "latest",
+		"mongoose": "latest",
+		"node-gcm": "latest",
+		"bcrypt": "latest",
+		"winston": "latest",
+		"nconf": "latest",
+		"passport": "latest",
+		"passport-http": "latest",
+		"passport-http-bearer": "latest",
+		"passport-facebook-token": "latest",
+		"multer" : "latest"
+	}
+}
