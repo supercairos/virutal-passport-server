@@ -5,8 +5,7 @@ var crypto = require('crypto');
 
 var UsersSchema = database.Schema({
     email: { type: String, index: true },
-    firstname: String,
-	lastname: String,
+    name: String,
     password: String,
     token: String,
     gcm_token: String
