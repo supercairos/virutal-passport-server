@@ -27,12 +27,8 @@ module.exports = function(app) {
 				return next(new NetworkException("A request with no email was made", 1));
 			}
 			
-			if (!req.body.lastname) {
-				return next(new NetworkException("A request with no lastname was made", 1));
-			}
-			
-			if (!req.body.firstname) {
-				return next(new NetworkException("A request with no firstname was made", 1));
+			if (!req.body.name) {
+				return next(new NetworkException("A request with no name was made", 1));
 			}
 			
 			if (!req.body.password) {
@@ -58,8 +54,7 @@ module.exports = function(app) {
 		function (req, res) {
 			var myUser = new User({
 				email: req.body.email.trim(),
-				firstname: req.body.firstname.trim(),
-				lastname: req.body.lastname.trim(),
+				name: req.body.name.trim(),
 				password: User.hash(req.body.password.trim()),
 				token: crypto.randomBytes(256).toString('hex')
 			});
