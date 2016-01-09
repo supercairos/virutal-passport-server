@@ -7,7 +7,7 @@ var geonames = new geode('supercairos');
 module.exports = function(app) {
 
 	app.get('/cities/search', 
-		passport.authenticate('bearer', { session: false }), 
+		// passport.authenticate('bearer', { session: false }), 
 		function(req, res){
 			geonames.search({ 
 				name: req.query.query, 
@@ -18,15 +18,18 @@ module.exports = function(app) {
 				fuzzy : 0.95
 			}, function(err, collection){
 				var out = [];
-				collection.geonames.forEach(function (element, index) {
-					out.push({
-						name: element.name,
-						country: element.countryName,
-						latitude: element.lat,
-						longitude: element.lng,
+				log.info("%o", collection);
+				if(collection.totalResultsCount > 0 && collection.geonames) {
+					collection.geonames.forEach(function (element, index) {
+						out.push({
+							name: element.name,
+							country: element.countryName,
+							latitude: element.lat,
+							longitude: element.lng,
+						});
+						log.info("%s, %s (%d,%d)", element.name, element.countryName, element.lat, element.lng);
 					});
-					log.info("%s, %s (%d,%d)", element.name, element.countryName, element.lat, element.lng);
-				});
+				}
 				
 				res.status(200).json( out ).end();
 			});
