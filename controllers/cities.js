@@ -7,7 +7,7 @@ var geonames = new geode('supercairos');
 module.exports = function(app) {
 
 	app.get('/cities/search', 
-		// passport.authenticate('bearer', { session: false }), 
+		passport.authenticate('bearer', { session: false }), 
 		function(req, res){
 			geonames.search({ 
 				name: req.query.query, 
@@ -18,7 +18,6 @@ module.exports = function(app) {
 				fuzzy : 0.95
 			}, function(err, collection){
 				var out = [];
-				log.info("%o", collection);
 				if(collection.totalResultsCount > 0 && collection.geonames) {
 					collection.geonames.forEach(function (element, index) {
 						out.push({
