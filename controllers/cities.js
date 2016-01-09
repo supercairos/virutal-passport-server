@@ -26,7 +26,6 @@ module.exports = function(app) {
 							latitude: element.lat,
 							longitude: element.lng,
 						});
-						log.info("%s, %s (%d,%d)", element.name, element.countryName, element.lat, element.lng);
 					});
 				}
 				

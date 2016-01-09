@@ -45,15 +45,13 @@ passport.use(new BasicStrategy(
 
 passport.use(new BearerStrategy(
     function(token, done) {
-        log.info("Trying auth with token : " + token);
         User.findOne({ token: token }, function (err, user) {
             if (err) { return done(err); }
             if (!user) { 
                 log.error("Could not log in user with token : " + token);
                 return done(null, false); 
             }
-
-            log.info("Login success for user : " + user.email);
+			
             return done(null, user);
         });
     }
