@@ -3,6 +3,8 @@ var multer  = require('multer');
 var passport = require('passport');
 var geode = require('geode');
 var geonames = new geode('supercairos');
+var request = require('request');
+var Flickr = require("flickrapi");
 
 module.exports = function(app) {
 
