@@ -1,3 +1,6 @@
+var User = require('../models/User.js');
+var NetworkException = require('../models/NetworkException.js');
+
 var log = require('../libs/logger.js');
 var multer  = require('multer');
 var passport = require('passport');
@@ -18,13 +21,25 @@ var upload = multer({ storage: storage })
 
 module.exports = function(app) {
 
-	app.post('/pictures', 
+	app.post('/pictures/upload', 
 		passport.authenticate('bearer', { session: false }), 
 		upload.single('file'), 
 		function(req, res){
-			log.info("%o", req.file);
-			var hostname = req.headers.host;
-			res.status(200).json({ status : 'OK', path : 'http://' + hostname + '/' + req.file.path}).end()
+			var url = 'http://' + req.headers.host + '/' + req.file.path;
+			url = url.replace('\\', '/');
+			log.info("Url is : %s", url);
+			User.findOneAndUpdate(
+				{ token : req.user.token }, 
+				{ picture : url }, 
+				{ new : true},
+				function (err, user) {
+					if (err || !user) {
+						return next(new NetworkException(err.message, 1));
+					}
+					
+					res.status(201).json(user).end();
+				}
+			);
 		}
 	);
 }

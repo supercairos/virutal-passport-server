@@ -8,6 +8,7 @@ var UsersSchema = database.Schema({
     name: String,
     password: String,
     token: String,
+	picture: String,
     gcm_token: String
 });
 
