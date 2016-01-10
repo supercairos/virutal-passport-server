@@ -136,22 +136,22 @@ module.exports = function(app) {
 		});	
 	});
 
-	app.get('/users/autocomplete/:query', 
-		passport.authenticate('bearer', { session: false }), 
-		function(req, res) {
-			log.info("Looking for an email starting by %s", req.query.q);
-			if(req.params.query && req.params.query.length > 2){
-				User.find({ 'email':  { $regex: new RegExp(req.query.q, 'i') }}, 'email picture', function(err, emails) {
-					if (err) {
-						return next(new NetworkException(err.message, 1));
-					}
+	// app.get('/users/autocomplete/:query', 
+		// passport.authenticate('bearer', { session: false }), 
+		// function(req, res) {
+			// log.info("Looking for an email starting by %s", req.query.q);
+			// if(req.params.query && req.params.query.length > 2){
+				// User.find({ 'email':  { $regex: new RegExp(req.query.q, 'i') }}, 'email picture', function(err, emails) {
+					// if (err) {
+						// return next(new NetworkException(err.message, 1));
+					// }
 
-					res.status(200).json(emails).end();
-				});
-			} else {
-				log.info("Too short");
-				res.status(200).json(new Array()).end();
-			}
-		}
-	);
+					// res.status(200).json(emails).end();
+				// });
+			// } else {
+				// log.info("Too short");
+				// res.status(200).json(new Array()).end();
+			// }
+		// }
+	// );
 }

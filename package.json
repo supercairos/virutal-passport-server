@@ -14,11 +14,13 @@
     "virtual-passport": "server.js"
   },
   "dependencies": {
-	"geode": "latest",
     "bcrypt": "latest",
     "body-parser": "latest",
     "cloud-env": "^0.1.1",
     "express": "latest",
+    "flickrapi": "latest",
+	"request": "latest",
+    "geode": "latest",
     "mongodb": "latest",
     "mongoose": "latest",
     "multer": "latest",

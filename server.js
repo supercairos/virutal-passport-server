@@ -25,7 +25,10 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 
 // Upload dir
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', 
+		passport.authenticate('bearer', { session: false }), 
+		express.static('uploads')
+);
 
 
 // dynamically include routes (Controller)
