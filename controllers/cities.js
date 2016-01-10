@@ -25,7 +25,7 @@ module.exports = function(app) {
 							country: element.countryName,
 							latitude: element.lat,
 							longitude: element.lng,
-							picture: 'http://' + req.headers.host + '/cities/' + element.lat + '/' + element.lng;
+							picture: 'http://' + req.headers.host + '/cities/' + element.lat + '/' + element.lng
 						});
 					});
 				}
@@ -36,7 +36,7 @@ module.exports = function(app) {
 	);
 	
 	app.get('/cities/:lat/:lon', 
-		// passport.authenticate('bearer', { session: false }), 
+		passport.authenticate('bearer', { session: false }), 
 		function(req, res){
 			Flickr.tokenOnly({
 			  api_key: "50ce3b858e5d2e847d26ce7ee56f7bce",
