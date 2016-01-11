@@ -68,8 +68,7 @@ module.exports = function(app) {
 					// do something with result
 					var url;
 					if(result.photos.photo.length > 0) {
-						var photos = result.photos;
-						var photo = photos.photo[Math.floor(Math.random()*items.length)];
+						var photo = result.photos.photo[0];
 						flickr.photos.getSizes({
 							photo_id : photo.id
 						}, function(err, result) {
