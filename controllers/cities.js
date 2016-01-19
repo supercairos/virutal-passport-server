@@ -84,7 +84,7 @@ module.exports = function(app) {
 							sizes.forEach(function (element, index, array) {
 								if((element.width * element.height) > current) {
 									current = element.width * element.height;
-									if(current < MAX_PICTURE_SIZE) {
+									if(current < MAX_PICTURE_SIZE || !url) {
 										url = element.source;
 									}
 								}
