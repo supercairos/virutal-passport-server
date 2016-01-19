@@ -6,6 +6,8 @@ var geonames = new geode('supercairos');
 var request = require('request');
 var Flickr = require("flickrapi");
 
+var MAX_PICTURE_SIZE = 1025 * 1025;
+
 module.exports = function(app) {
 
 	app.get('/cities/search', 
@@ -82,7 +84,9 @@ module.exports = function(app) {
 							sizes.forEach(function (element, index, array) {
 								if((element.width * element.height) > current) {
 									current = element.width * element.height;
-									url = element.source;
+									if(current < MAX_PICTURE_SIZE) {
+										url = element.source;
+									}
 								}
 							});
 							
