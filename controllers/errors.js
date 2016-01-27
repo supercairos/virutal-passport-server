@@ -6,7 +6,7 @@ module.exports = function(app) {
 	app.use(function (err, req, res, next) {
 			log.error("Got : " + err.message + " (code : " + err.code + ")");
 			res.status(500)
-			   .setHeader('Cache-Control', 'no-cache')
+			   .header('Cache-Control', 'no-cache')
 			   .send({ message: err.message, code: err.extra })
 			   .end();
 		}

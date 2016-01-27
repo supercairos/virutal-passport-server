@@ -8,7 +8,7 @@ var Forecast = require('forecast.io');
 module.exports = function(app) {
 
 	app.get('/weather/forecast/:latitude/:longitude', 
-		passport.authenticate('bearer', { session: false }), 
+		// passport.authenticate('bearer', { session: false }), 
 		function(req, res, next){
 			var forecast = new Forecast({
 				APIKey: config.get("forecast.io:key"),
@@ -70,7 +70,7 @@ module.exports = function(app) {
 				});
 				
 				res.status(200)
-				    // .setHeader('Cache-Control', ret.headers('Cache-Control')) // get forecast.io Cache-Control
+				   .header('Cache-Control', ret.headers['Cache-Control'] ? ret.headers['Cache-Control'] : 'public, max-stale=' + (3 * 60 * 60)) // get forecast.io Cache-Control
 				   .json(out)
 				   .end();
 			});

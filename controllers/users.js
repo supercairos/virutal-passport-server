@@ -66,7 +66,7 @@ module.exports = function(app) {
 				
 				log.info("A new user registered %s (token:%s)", user.email, user.token);
 				res.status(201)
-				   .setHeader('Cache-Control', 'no-cache')
+				   .header('Cache-Control', 'no-cache')
 				   .json( user )
 				   .end();
 			});
@@ -81,7 +81,7 @@ module.exports = function(app) {
 				}
 				log.info('The number of updated documents was %s', affected);
 				res.status(201)
-				   .setHeader('Cache-Control', 'no-cache')
+				   .header('Cache-Control', 'no-cache')
 				   .end();
 			});
 		}
@@ -93,7 +93,7 @@ module.exports = function(app) {
 		}), 
 		function(req, res) {
 			res.status(200)
-			   .setHeader('Cache-Control', 'no-cache')
+			   .header('Cache-Control', 'no-cache')
 			   .json( req.user )
 			   .end();
 		}
