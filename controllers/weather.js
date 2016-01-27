@@ -8,7 +8,7 @@ var Forecast = require('forecast.io');
 module.exports = function(app) {
 
 	app.get('/weather/forecast/:latitude/:longitude', 
-		// passport.authenticate('bearer', { session: false }), 
+		passport.authenticate('bearer', { session: false }), 
 		function(req, res, next){
 			var forecast = new Forecast({
 				APIKey: config.get("forecast.io:key"),
@@ -29,6 +29,10 @@ module.exports = function(app) {
 				};
 				
 				data.daily.data.forEach(function (element, index, array) {
+					if(index > 6) {
+						return;
+					}
+					
 					var icon = 0;
 					switch (element.icon) {
 						case "clear-day":
@@ -58,7 +62,7 @@ module.exports = function(app) {
 							break;
 					}
 					out.forecasts.push({
-						date: element.time,
+						date: (element.time * 1000),
 						min: element.temperatureMin,
 						max: element.temperatureMax,
 						icon: icon
