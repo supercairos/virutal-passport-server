@@ -36,14 +36,17 @@ module.exports = function(app) {
 					});
 				}
 				
-				res.status(200).json( out ).end();
+				res.status(200)
+				   .header('Cache-Control', 'no-cache')
+				   .json(out)
+				   .end();
 			});
 		}
 	);
 	
 	app.get('/cities/:lat/:lon', 
-		passport.authenticate('bearer', { session: false }), 
-		function(req, res){
+		// passport.authenticate('bearer', { session: false }), 
+		function(req, res, next){
 			Flickr.tokenOnly({
 			  api_key: config.get("flickr:api_key"),
 			  secret: config.get("flickr:secret")
@@ -51,7 +54,7 @@ module.exports = function(app) {
 				if (error) {
 					return next(new NetworkException(err.message, 1));
 				}
-	
+
 				flickr.photos.search({
 					sort : "interestingness-desc",
 					privacy_filter : 1,
@@ -69,6 +72,7 @@ module.exports = function(app) {
 					if (err) {
 						return next(new NetworkException(err.message, 1));
 					}
+					
 					// do something with result
 					var url;
 					if(result.photos.photo.length > 0) {
@@ -92,8 +96,9 @@ module.exports = function(app) {
 								}
 							});
 							
-							log.info("Url : ", url);
-							req.pipe(request(url)).pipe(res)
+							// log.info("Url : ", url);
+							req.pipe(request(url))
+							   .pipe(res)
 						});
 					} else {
 						res.status(404).end();
