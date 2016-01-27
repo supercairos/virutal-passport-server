@@ -2,9 +2,10 @@ var log = require('../libs/logger.js');
 var multer  = require('multer');
 var passport = require('passport');
 var geode = require('geode');
-var geonames = new geode('supercairos');
 var request = require('request');
 var Flickr = require("flickrapi");
+
+var config = require('../config/config.js');
 
 var MAX_PICTURE_SIZE = 1025 * 1025;
 
@@ -13,6 +14,7 @@ module.exports = function(app) {
 	app.get('/cities/search', 
 		passport.authenticate('bearer', { session: false }), 
 		function(req, res){
+			var geonames = new geode(config.get("geoname:username"));
 			geonames.search({ 
 				name: req.query.query, 
 				name_startsWith: req.query.query, 
@@ -43,8 +45,8 @@ module.exports = function(app) {
 		passport.authenticate('bearer', { session: false }), 
 		function(req, res){
 			Flickr.tokenOnly({
-			  api_key: "50ce3b858e5d2e847d26ce7ee56f7bce",
-			  secret: "86aa46059054f8ef"
+			  api_key: config.get("flickr:api_key"),
+			  secret: config.get("flickr:secret")
 			}, function(error, flickr) {
 				if (error) {
 					return next(new NetworkException(err.message, 1));

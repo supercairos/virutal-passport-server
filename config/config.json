@@ -1,15 +1,28 @@
 {
-    "mongoose": {
-        "uri": "mongodb://127.0.0.1:27017/",
+	"mongoose": {
+		"uri": "mongodb://127.0.0.1:27017/",
 		"name": "passport"
-    },
+	},
 
-    "gcm" : {
-    	"id" : "AIzaSyDQMPaMJJwUWCidjaZJ7eo3HXwBM34LjDY"
-    },
-	
-    "facebook" : {
-        "app_id" :"591449964316321",
-        "app_secret": "2eb29e1265532ecb9492d8cf48ab363a"
-    }
+	"gcm": {
+		"id": "AIzaSyDQMPaMJJwUWCidjaZJ7eo3HXwBM34LjDY"
+	},
+
+	"facebook": {
+		"app_id": "591449964316321",
+		"app_secret": "2eb29e1265532ecb9492d8cf48ab363a"
+	},
+
+	"flickr": {
+		"api_key": "50ce3b858e5d2e847d26ce7ee56f7bce",
+		"secret": "86aa46059054f8ef"
+	},
+
+	"geoname": {
+		"username": "supercairos"
+	},
+
+	"forecast.io": {
+		"key": "b917d982336ee25f1346389ffa3554d2"
+	}
 }

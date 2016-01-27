@@ -1,13 +1,11 @@
 var User = require('../models/User.js');
 var NetworkException = require('../models/NetworkException.js');
-
 var log = require('../libs/logger.js');
 var multer  = require('multer');
 var request = require('request');
 var passport = require('passport');
 var path = require('path');
-
-var Flickr = require("flickrapi");
+var config = require('../config/config.js');
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {

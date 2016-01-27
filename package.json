@@ -30,6 +30,7 @@
     "passport-facebook-token": "latest",
     "passport-http": "latest",
     "passport-http-bearer": "latest",
-    "winston": "latest"
+    "winston": "latest",
+	"forecast.io": "latest"
   }
 }
