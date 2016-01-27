@@ -65,7 +65,10 @@ module.exports = function(app) {
 				} 
 				
 				log.info("A new user registered %s (token:%s)", user.email, user.token);
-				res.status(201).json( user ).end();
+				res.status(201)
+				   .setHeader('Cache-Control', 'no-cache')
+				   .json( user )
+				   .end();
 			});
 	});
 
@@ -77,7 +80,9 @@ module.exports = function(app) {
 					return next(new NetworkException(err.message, 1));
 				}
 				log.info('The number of updated documents was %s', affected);
-				res.status(201).end();
+				res.status(201)
+				   .setHeader('Cache-Control', 'no-cache')
+				   .end();
 			});
 		}
 	);
@@ -87,7 +92,10 @@ module.exports = function(app) {
 			session: false 
 		}), 
 		function(req, res) {
-			res.status(200).json( req.user ).end();
+			res.status(200)
+			   .setHeader('Cache-Control', 'no-cache')
+			   .json( req.user )
+			   .end();
 		}
 	);
 

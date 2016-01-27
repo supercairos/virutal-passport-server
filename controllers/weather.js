@@ -69,7 +69,10 @@ module.exports = function(app) {
 					});
 				});
 				
-				res.status(200).json(out).end();
+				res.status(200)
+				    // .setHeader('Cache-Control', ret.headers('Cache-Control')) // get forecast.io Cache-Control
+				   .json(out)
+				   .end();
 			});
 		}
 	);

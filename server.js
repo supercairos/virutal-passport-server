@@ -8,6 +8,8 @@ var passport = require('passport');
 
 var app = express();
 
+var MAX_CACHE_TIME = 60 * 60 * 24 * 7;     // 7 days
+
 app.use(function(req, res, next) {
 	logger.info("Accepting connection from %s at %s for %s", req.ip, Date.now(), req.originalUrl);
 	next();
@@ -27,7 +29,7 @@ app.use(passport.initialize());
 // Upload dir
 app.use('/uploads', 
 		passport.authenticate('bearer', { session: false }), 
-		express.static('uploads')
+		express.static('uploads', { maxAge: MAX_CACHE_TIME })
 );
 
 
