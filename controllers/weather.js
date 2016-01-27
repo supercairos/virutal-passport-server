@@ -7,8 +7,8 @@ var Forecast = require('forecast.io');
 
 module.exports = function(app) {
 
-	app.get('/weather/:latitude/:longitude', 
-		passport.authenticate('bearer', { session: false }), 
+	app.get('/weather/forecast/:latitude/:longitude', 
+		// passport.authenticate('bearer', { session: false }), 
 		function(req, res, next){
 			var forecast = new Forecast({
 				APIKey: config.get("forecast.io:key"),
@@ -25,16 +25,43 @@ module.exports = function(app) {
 				}
 
 				var out = {
-					forecast: []
+					forecasts: []
 				};
 				
 				data.daily.data.forEach(function (element, index, array) {
-					log.info(index + " t = " + element.time + " min = " + element.temperatureMin + " max = " + element.temperatureMax + " icon = " + element.icon);
-					out.forecast.push({
+					var icon = 0;
+					switch (element.icon) {
+						case "clear-day":
+						case "clear-night":
+							icon = 0;
+							break;
+						case "cloudy":
+							icon = 1;
+							break;
+						case "fog":
+							icon = 2;
+							break;
+						case "partly-cloudy-day":
+						case "partly-cloudy-night":
+							icon = 3;
+							break;
+						case "rain":
+							icon = 5;
+							break;
+						case "snow":
+							icon = 6;
+							break;
+						case "sleet":
+						case "wind":
+						default:
+							icon = 7;
+							break;
+					}
+					out.forecasts.push({
 						date: element.time,
 						min: element.temperatureMin,
 						max: element.temperatureMax,
-						icon: element.icon
+						icon: icon
 					});
 				});
 				
