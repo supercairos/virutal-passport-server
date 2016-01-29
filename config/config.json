@@ -24,5 +24,11 @@
 
 	"forecast.io": {
 		"key": "b917d982336ee25f1346389ffa3554d2"
+	},
+	
+	"google": {
+		"place": {
+			"key": "AIzaSyBXVNwfViFsGlo6L1Yq8nN3Lbbof2XIqq4"
+		}
 	}
 }

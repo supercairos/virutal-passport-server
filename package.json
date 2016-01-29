@@ -16,11 +16,12 @@
   "dependencies": {
     "bcrypt": "latest",
     "body-parser": "latest",
-    "cloud-env": "^0.1.1",
+    "cloud-env": "latest",
     "express": "latest",
     "flickrapi": "latest",
-	"request": "latest",
+    "forecast.io": "latest",
     "geode": "latest",
+    "google-places": "latest",
     "mongodb": "latest",
     "mongoose": "latest",
     "multer": "latest",
@@ -30,7 +31,7 @@
     "passport-facebook-token": "latest",
     "passport-http": "latest",
     "passport-http-bearer": "latest",
-    "winston": "latest",
-	"forecast.io": "latest"
+    "request": "latest",
+    "winston": "latest"
   }
 }
