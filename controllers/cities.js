@@ -70,7 +70,7 @@ module.exports = function(app) {
 							res.status(200)
 							   .header('Cache-Control', 'no-cache')
 							   .json({
-									name: name ? name : element.description,
+									name: name ? name : response.result.name,
 									country: country ? country : "",
 									latitude: latitude,
 									longitude: longitude,
@@ -81,7 +81,7 @@ module.exports = function(app) {
 							res.status(200)
 							   .header('Cache-Control', 'no-cache')
 							   .json({
-									name: name ? name : element.description,
+									name: name ? name : response.result.name,
 									country: country ? country : "",
 									latitude: latitude,
 									longitude: longitude
@@ -95,7 +95,7 @@ module.exports = function(app) {
 	);
 	
 	app.get('/cities/picture/:latitude/:longitude', 
-		// passport.authenticate('bearer', { session: false }),
+		passport.authenticate('bearer', { session: false }),
 		function(req, res, next) {
 			getFlickrUrl(req.params.latitude, req.params.longitude, function (url) {
 				res.status(200)
