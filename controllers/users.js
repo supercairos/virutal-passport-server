@@ -47,30 +47,28 @@ module.exports = function(app) {
 					if (user) {
 						return next(new NetworkException("This user :" + req.body.email + " already exist", 1));
 					}
-				});
-				
-			next();
-		},
-		function (req, res) {
-			var myUser = new User({
-				email: req.body.email.trim(),
-				name: req.body.name.trim(),
-				password: User.hash(req.body.password.trim()),
-				token: crypto.randomBytes(256).toString('hex')
-			});
+					
+					var myUser = new User({
+						email: req.body.email.trim(),
+						name: req.body.name.trim(),
+						password: User.hash(req.body.password.trim()),
+						token: crypto.randomBytes(256).toString('hex')
+					});
 
-			myUser.save(function (err, user) {
-				if (err){
-					return next(new NetworkException(err.message, 1));
-				} 
-				
-				log.info("A new user registered %s (token:%s)", user.email, user.token);
-				res.status(201)
-				   .header('Cache-Control', 'no-cache')
-				   .json( user )
-				   .end();
-			});
-	});
+					myUser.save(function (err, user) {
+						if (err){
+							return next(new NetworkException(err.message, 1));
+						} 
+						
+						log.info("A new user registered %s (token:%s)", user.email, user.token);
+						res.status(201)
+						   .header('Cache-Control', 'no-cache')
+						   .json( user )
+						   .end();
+					});
+				});
+		}
+	);
 
 	app.put('/users/gcm/:gcm_token', 
 		passport.authenticate('bearer', { session: false }), 
