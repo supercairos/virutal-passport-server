@@ -11,7 +11,7 @@ var app = express();
 var MAX_CACHE_TIME = 60 * 60 * 24 * 7;     // 7 days
 
 app.use(function(req, res, next) {
-	logger.info("Accepting connection from %s at %s for %s", req.ip, Date.now(), req.originalUrl);
+	logger.info("Accepting connection from %s at %s for %s:%s", req.ip, Date.now(), req.method, req.originalUrl);
 	next();
 });
 

@@ -10,36 +10,37 @@ var BearerStrategy          = require('passport-http-bearer').Strategy;
 passport.use(new BasicStrategy(
     function(userid, password, done) {
         log.info("Trying to login: %s with password %s (hashed: %s)", userid, password, User.hash(password));
-        User.where({ email: userid.trim(), password: User.hash(password.trim()) }).findOne( function(err, user) {
-            if (err) { 
-                log.error("Database failed with error: %s", err);
-                return done(err); 
-            }
+        User.where({ email: userid.trim(), password: User.hash(password.trim()) })
+			.findOne( function(err, user) {
+				if (err) { 
+					log.error("Database failed with error: %s", err);
+					return done(err); 
+				}
 
-            if (!user) { 
-                log.info("Couldn't find user :( ", err);
-                return done(null, false); 
-            }
+				if (!user) { 
+					log.info("Couldn't find user :( ", err);
+					return done(null, false); 
+				}
 
-            try {
-                user.token = crypto.randomBytes(256).toString('hex');
-                log.info("Generated token %s for user %s", user.token, user.email);
-            } catch (ex) {
-                log.info("Couldn't create a new token :( ", err);
-                return done(ex); 
-            }
+				try {
+					user.token = crypto.randomBytes(256).toString('hex');
+					log.info("Generated token %s for user %s", user.token, user.email);
+				} catch (ex) {
+					log.info("Couldn't create a new token :( ", err);
+					return done(ex); 
+				}
 
-            user.save(function (err, user) {
-                if (err) { 
-                    log.error("Database failed with error: %s", err);
-                    return done(err); 
-                }
-                
-                log.info("%s logged in success", user.email);
-                return done(null, user);
-            });
-            
-        });
+				user.save(function (err, user) {
+					if (err) { 
+						log.error("Database failed with error: %s", err);
+						return done(err); 
+					}
+					
+					log.info("%s logged in success", user.email);
+					return done(null, user);
+				});
+			}
+		);
     }
 ));
 
